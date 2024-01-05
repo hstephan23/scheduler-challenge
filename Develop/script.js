@@ -15,6 +15,7 @@ $(function () {
   const hour17 = $("#hour-17");
   const displayDate = $("#currentDay");
   const buttons = $(".btn");
+  const block = $(".time-block");
   
   //got the local storage to save on the click of elements
   buttons.on("click", save);
@@ -23,7 +24,8 @@ $(function () {
     const saveText = $(this).siblings(".description").val();
     localStorage.setItem(buttonId, saveText);
   }
-
+  
+  //changes the color based on the time 
   if (parseInt(today.format("HH")) < 9) {
     hour9.addClass("future");
     hour10.addClass("future");
@@ -136,10 +138,15 @@ $(function () {
     hour16.addClass("past");
     hour17.addClass("past");
   }
-  // TODO: Add code to get any user input that was saved in localStorage and set
-  // the values of the corresponding textarea elements. HINT: How can the id
-  // attribute of each time-block be used to do this?
   
+  //use a for loop to iterate through the time-block class, and update the value using the key found in the localStorage
+  for (let i = 0; i < block.length; i++) {
+    const blockId = $(block[i]).attr("id");
+    const storedText = localStorage.getItem(blockId);
+    if (storedText != null) {
+      $(`#${blockId}`).children(".description").val(storedText);
+    }
+  }
 
   //displays date using day.js
   displayDate.text(today.format("dddd, MMM D, YYYY - h:mm a"));
